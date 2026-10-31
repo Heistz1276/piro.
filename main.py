@@ -59,7 +59,7 @@ SOURCE_IDS = env_ids("MVP_CHANNEL_IDS") or {1524379574585000006}          # wher
 MVP_CHANNEL_ID = sorted(SOURCE_IDS)[0]
 
 RAID_START_NUMBER = env_int("RAID_START_NUMBER", 1)
-VERSION = "2.4-env-wins"
+VERSION = "2.5-badges"
 _script_dir = Path(__file__).resolve().parent
 _db = Path(os.getenv("PIRO_DB_PATH", "piro.sqlite3"))
 DB_PATH = str(_db if _db.is_absolute() else _script_dir / _db)      # always next to this file, whatever the working folder
@@ -201,17 +201,42 @@ def draw_badge(d: int) -> bytes | None:
         return None
 
 
+BADGE_NAMES: dict[int, str] = {}         # division -> attachment filename (keeps the real extension)
+BADGE_SOURCE: dict[int, str] = {}        # division -> "file" or "drawn" (for diagnostics)
+
+
+def find_badge_file(d: int) -> Path | None:
+    """Find the badge for a division in ./badges: division1.png, Division_1.jpg, division-1.webp ..."""
+    if not BADGE_DIR.is_dir():
+        return None
+    pattern = re.compile(rf"^division[\s_-]*0?{d}\.(png|jpe?g|webp|gif)$", re.I)
+    for path in sorted(BADGE_DIR.iterdir()):
+        if path.is_file() and pattern.match(path.name) and path.stat().st_size > 100:
+            return path
+    return None
+
+
 def load_badges() -> None:
+    BADGES.clear()
+    BADGE_NAMES.clear()
+    BADGE_SOURCE.clear()
     for d in range(1, 6):
-        path = BADGE_DIR / f"division{d}.png"
-        if path.is_file():
+        path = find_badge_file(d)
+        if path is not None:
             BADGES[d] = path.read_bytes()
+            BADGE_NAMES[d] = f"division{d}{path.suffix.lower()}"
+            BADGE_SOURCE[d] = "file"
             continue
         drawn = draw_badge(d)
         if drawn:
             BADGES[d] = drawn
+            BADGE_NAMES[d] = f"division{d}.png"
+            BADGE_SOURCE[d] = "drawn"
         else:
-            print(f"No badge for division {d}: put {path} next to piro.py (or install pillow).")
+            print(f"No badge for division {d}: put division{d}.png in {BADGE_DIR} (or install pillow).")
+    print(f"Badges: {len(BADGES)}/5 loaded from {BADGE_DIR}  "
+          f"(files: {sum(1 for v in BADGE_SOURCE.values() if v == 'file')}, "
+          f"drawn: {sum(1 for v in BADGE_SOURCE.values() if v == 'drawn')})")
 
 
 load_badges()
@@ -220,12 +245,12 @@ load_badges()
 def badge_ref(d: int) -> str | None:
     if DIVISION_IMAGE_URLS[d]:
         return DIVISION_IMAGE_URLS[d]
-    return f"attachment://division{d}.png" if d in BADGES else None
+    return f"attachment://{BADGE_NAMES[d]}" if d in BADGES else None
 
 
 def badge_files() -> list[discord.File]:
     """Files are single-use, so call this again for every send."""
-    return [discord.File(io.BytesIO(BADGES[d]), filename=f"division{d}.png")
+    return [discord.File(io.BytesIO(BADGES[d]), filename=BADGE_NAMES[d])
             for d in range(1, 6) if d in BADGES and not DIVISION_IMAGE_URLS[d]]
 
 
@@ -1107,7 +1132,7 @@ async def status_command(interaction: discord.Interaction):
     embed = make_embed(f"{BOT_NAME} status")
     embed.add_field(name="Saved raids", value=str(raids), inline=True)
     embed.add_field(name="Next raid number", value=f"#{next_raid_number(interaction.guild_id):04d}", inline=True)
-    embed.add_field(name="Badges", value=f"{len(BADGES)}/5 ready", inline=True)
+    embed.add_field(name="Badges", value=f"{len(BADGES)}/5 ready ({sum(1 for v in BADGE_SOURCE.values() if v == 'file')} from files)", inline=True)
     embed.add_field(name="MVP channel", value=", ".join(f"<#{c}>" for c in sorted(SOURCE_IDS)), inline=True)
     embed.add_field(name="MVP bot", value=f"<@{MVP_BOT_ID}>", inline=True)
     embed.add_field(name="Raid updates", value=f"<#{RAID_UPDATE_ID}>", inline=True)
@@ -1233,6 +1258,7 @@ async def test_command(interaction: discord.Interaction):
     lines = [f"Source: [open the MVP log]({message.jump_url})",
              f"Pinged: **{len(raiders) + len(skipped)}**  \u00b7  counted: **{len(raiders)}**  \u00b7  not counted: **{len(skipped)}**",
              f"Nothing is saved or counted.  \u00b7  bot v{VERSION}",
+             f"Badges loaded: **{len(BADGES)}/5**" + ("" if len(BADGES) == 5 else f"  (put division1.png to division5.png in the badges folder next to the bot file, or install pillow)"),
              f"MVP post: {update_msg.jump_url if update_msg else f'could not post in <#{RAID_UPDATE_ID}>'}",
              f"Division log: {log_msg.jump_url if log_msg else f'could not post in <#{LOG_ID}>'}"]
     if skipped:
