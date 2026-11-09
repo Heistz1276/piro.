@@ -1,0 +1,223 @@
+{
+  "version": "d2",
+  "backup_id": "piro-leaderboard-template",
+  "messages": [
+    {
+      "_id": "piro-leaderboard-template",
+      "data": {
+        "flags": 32768,
+        "components": [
+          {
+            "type": 17,
+            "accent_color": 5793266,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "## Division MVPs Leaderboard\nTop divisions by MVPs count in the current season."
+                  }
+                ],
+                "accessory": {
+                  "type": 11,
+                  "media": {
+                    "url": "attachment://trophy.png"
+                  },
+                  "description": "Gold trophy"
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 2894892,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "### 📊 Server Stats"
+                  }
+                ],
+                "accessory": {
+                  "type": 2,
+                  "style": 2,
+                  "label": "Total Divisions: 5",
+                  "custom_id": "piro_stats_divisions",
+                  "disabled": true
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 16106818,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "### `1`  Division 1\nMVPs Count · ⭐ **7**"
+                  }
+                ],
+                "accessory": {
+                  "type": 11,
+                  "media": {
+                    "url": "attachment://division1.png"
+                  },
+                  "description": "Division 1 gold crowned shield badge"
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 2278750,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "### `2`  Division 3\nMVPs Count · ⭐ **6**"
+                  }
+                ],
+                "accessory": {
+                  "type": 11,
+                  "media": {
+                    "url": "attachment://division3.png"
+                  },
+                  "description": "Division 3 green crowned shield badge"
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 11032055,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "### `3`  Division 4\nMVPs Count · ⭐ **3**"
+                  }
+                ],
+                "accessory": {
+                  "type": 11,
+                  "media": {
+                    "url": "attachment://division4.png"
+                  },
+                  "description": "Division 4 purple crowned shield badge"
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 3900150,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "### `4`  Division 2\nMVPs Count · ⭐ **1**"
+                  }
+                ],
+                "accessory": {
+                  "type": 11,
+                  "media": {
+                    "url": "attachment://division2.png"
+                  },
+                  "description": "Division 2 blue crowned shield badge"
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 15680580,
+            "components": [
+              {
+                "type": 9,
+                "components": [
+                  {
+                    "type": 10,
+                    "content": "### `5`  Division 5\nMVPs Count · ⭐ **0**"
+                  }
+                ],
+                "accessory": {
+                  "type": 11,
+                  "media": {
+                    "url": "attachment://division5.png"
+                  },
+                  "description": "Division 5 red crowned shield badge"
+                }
+              }
+            ]
+          },
+          {
+            "type": 17,
+            "accent_color": 2894892,
+            "components": [
+              {
+                "type": 10,
+                "content": "🕒  Last updated: 10 hours ago  ·  Total Divisions: 5"
+              },
+              {
+                "type": 1,
+                "components": [
+                  {
+                    "type": 2,
+                    "style": 2,
+                    "label": "⏮",
+                    "custom_id": "piro_page_first",
+                    "disabled": true
+                  },
+                  {
+                    "type": 2,
+                    "style": 2,
+                    "label": "◀",
+                    "custom_id": "piro_page_previous",
+                    "disabled": true
+                  },
+                  {
+                    "type": 2,
+                    "style": 2,
+                    "label": "1/1",
+                    "custom_id": "piro_page_current",
+                    "disabled": true
+                  },
+                  {
+                    "type": 2,
+                    "style": 2,
+                    "label": "▶",
+                    "custom_id": "piro_page_next",
+                    "disabled": true
+                  },
+                  {
+                    "type": 2,
+                    "style": 2,
+                    "label": "⏭",
+                    "custom_id": "piro_page_last",
+                    "disabled": true
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "username": "Piro",
+        "avatar_url": "",
+        "embeds": [],
+        "attachments": []
+      }
+    }
+  ],
+  "targets": []
+}
